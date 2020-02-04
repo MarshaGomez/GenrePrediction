@@ -1,1 +1,3 @@
 *.gz
+/Cleaned_dataset/
+/src/Cleaned_dataset/

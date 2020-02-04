@@ -6,7 +6,17 @@ from nt import listdir
 import os
 import re
 from os import path
+import numpy as np
+import nltk
 import csv
+import matplotlib.pyplot as plt 
+import seaborn as sns
+from tqdm import tqdm
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.model_selection import train_test_split
+from nltk.corpus import stopwords
+from nltk.tokenize import word_tokenize
+import pandas as pd
 
 class Game():
 
@@ -57,4 +67,84 @@ class Game():
             # alcuni giochi non hanno il genere, quindi è inutile metterli nel csv, 
             # poi decidere se pulire la descrizione prima di metterla nel csv, 
             # decidere se lasciare l'id
-            
+
+    def creacsv(self):
+        nltk.download('stopwords')
+        nltk.download('punkt')
+        with open('games3.csv', mode='w') as games_file:
+            games_writer = csv.writer(games_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+            games_writer.writerow(["id","name","descr", "genres"])
+
+            files = (listdir("./Cleaned_dataset"))
+            for file in files:
+                with open("./Cleaned_dataset/"+file) as f:
+                    gameinfo = {}
+                    game = json.load(f)
+                    print(game['id'])
+
+
+                    if game['genres'] != [] and game['description_raw'] is not None and len(game['description_raw']) > 50:
+
+                        if game['id'] is not None or game['id'] != '':
+                            gameinfo['id']= game['id']
+                        
+                        if game['name'] is not None or game['name'] != '':
+                            print(game['id'])
+                            gameinfo['name']= game['name']
+                            desc = game['description_raw']
+
+
+                            name = re.sub(r'http\S+', '', desc, flags=re.MULTILINE)
+                            name = name.lower() 
+                            name= name.replace(",",'').replace("\n", " ")
+                            
+                            name = re.sub("\'", "", name) 
+                            # remove everything except alphabets 
+                            name = re.sub("[^a-zA-Z\d ]"," ", name) 
+                            
+                            # remove whitespaces 
+                            name = ' '.join(name.split())
+                            name = name.strip()
+
+
+
+                            descri = re.sub(r'http\S+', '', desc, flags=re.MULTILINE)
+                            descri = descri.lower() 
+                            descri= descri.replace(",",'').replace("\n", " ")
+                            
+                            descri = re.sub("\'", "", descri) 
+                            # remove everything except alphabets 
+                            descri = re.sub("[^a-zA-Z ]"," ", descri) 
+                            
+                            # remove whitespaces 
+                            descri = ' '.join(descri.split())
+                            descri = descri.strip()
+                          
+                            stop_words = set(stopwords.words('english')) 
+                            
+                            word_tokens = word_tokenize(descri) 
+                            
+                            filtered_sentence = [w for w in word_tokens if not w in stop_words] 
+                            
+                            filtered_sentence = [] 
+                            
+                            for w in word_tokens: 
+                                if w not in stop_words: 
+                                    filtered_sentence.append(w) 
+                            
+                           # print(word_tokens) 
+                           # print(filtered_sentence) 
+
+
+                            genres= game['genres']
+                            gameinfo['genres']=[]
+                            for genre in genres:                         
+                                gen=genre['name']
+                                gameinfo['genres'].append(gen)
+                       
+                        #json.dump(gameinfo, open("./clean.json", "a"), indent = 2)
+
+                        if descri != '' or name != '':
+                            with open('games3.csv', mode= 'a', encoding='utf-8') as games_file:
+                                games_writer = csv.writer(games_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+                                games_writer.writerow([gameinfo['id'], name, descri, gameinfo['genres']])
