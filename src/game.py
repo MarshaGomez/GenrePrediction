@@ -17,6 +17,8 @@ from sklearn.model_selection import train_test_split
 from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
 import pandas as pd
+from langdetect import detect
+
 
 class Game():
 
@@ -25,63 +27,20 @@ class Game():
         self.directory = kwargs.get('dir', 'GamesPrev')
         self.rawg = rawgpy.RAWG("User-Agent, this should identify your app")
 
-    def cleandataset(self):
-        #csv
-        #with open('games.csv', mode='w') as games_file:
-        #    games_writer = csv.writer(games_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
-        #    games_writer.writerow(["id","name", "description", "genres"])
-
-        files = (listdir("./Cleaned_dataset"))
-        for file in files:
-            with open("./Cleaned_dataset/"+file) as f:
-                # print(f)
-                gameinfo={}
-                game = json.load(f)
-
-                if game['id'] is not None:
-                    gameinfo['id']= game['id']
-                
-                if game['name'] is not None:
-                    name = game['name']
-         
-                if game['description_raw'] is not None:
-                    gameinfo['description_raw'] = game['description_raw']
-     
-                if game['genres'] is not None:
-                    genres= game['genres']
-                    gameinfo['genres']=[]
-                    for genre in genres:
-                        gen=genre['name']
-                        gameinfo['genres'].append(gen)
-           
-                json.dump(gameinfo, open("./clean.json", "a"), indent = 2)
-
-                #
-                #with open('games.csv', mode='a', encoding='utf-8') as games_file:
-                #    games_writer = csv.writer(games_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
-                #    games_writer.writerow([gameinfo['id'], gameinfo['name'], gameinfo['description_raw'], gameinfo['genres']])
-
-
-
-#!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-            # alcuni giochi non hanno il genere, quindi è inutile metterli nel csv, 
-            # poi decidere se pulire la descrizione prima di metterla nel csv, 
-            # decidere se lasciare l'id
-
     def creacsv(self):
         # nltk.download('stopwords')
         # nltk.download('punkt')
-        with open('gameDescription.csv', mode='w') as games_file:
+        with open('games.csv', mode='w') as games_file:
             games_writer = csv.writer(games_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
             games_writer.writerow(["id","name","descr", "genres"])
 
-            files = (listdir("./Cleaned_dataset"))
+            files = (listdir("C:/Users/Matilde/Desktop/dataminingprog/Cleaned_dataset"))
             for file in files:
-                with open("./Cleaned_dataset/"+file) as f:
+                with open("C:/Users/Matilde/Desktop/dataminingprog/Cleaned_dataset/"+file) as f:
                     gameinfo = {}
                     game = json.load(f)
                     # print(game['name'])
-                    print(game['id'])
+                    #print(game['id'])
                     # print(f)
 
                     if game['genres'] != []:
@@ -90,7 +49,7 @@ class Game():
                         elif game['description'] is not None:
                             desc = game['description']
 
-                        if desc != '':
+                        if desc != '' and len(desc)>50:
                             if game['id'] is not None or game['id'] != '':
                                 gameinfo['id']= game['id']
                             
@@ -126,7 +85,6 @@ class Game():
                                 word_tokens = word_tokenize(descri)
                                 # print(word_tokens)
 
-                                
                                 filtered_sentence = [w for w in word_tokens if not w in stop_words] 
                                 
                                 filtered_sentence = [] 
@@ -135,12 +93,23 @@ class Game():
                                     if w not in stop_words: 
                                         filtered_sentence.append(w)
 
-                                descri = re.sub("\\b\\w{0,2}\\b|[^a-zA-Z ]","", str(filtered_sentence)) 
-                                
-                                
-                            # print(word_tokens) 
-                            # print(filtered_sentence) 
+                                descri = re.sub("\\b\\w{0,2}\\b|[^a-zA-Z ]","", str(filtered_sentence))
 
+                                # remove whitespaces 
+                                descri = ' '.join(descri.split())
+                                descri = descri.strip()
+
+                                if descri != '':
+                                    print('-'+name+'-'+descri+'-')
+                                    lang = detect(descri)
+                                    
+                                    if lang != 'en':
+                                        descri=''
+                                        print(lang)
+                                        print(f)
+
+                                # print(word_tokens) 
+                                # print(filtered_sentence) 
 
                                 genres= game['genres']
                                 gameinfo['genres']=[]
@@ -152,20 +121,6 @@ class Game():
 
                             if descri != '' and name != '':
                                 # print(game['id'])
-                                with open('gameDescription.csv', mode= 'a', encoding='utf-8') as games_file:
+                                with open('games.csv', mode= 'a', encoding='utf-8') as games_file:
                                     games_writer = csv.writer(games_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
                                     games_writer.writerow([gameinfo['id'], name, descri, gameinfo['genres']])
-
-    def creacsvTot(self):
-        with open('games.csv', mode='w') as games_file:
-            games_writer = csv.writer(games_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
-            games_writer.writerow(["id","name","descr", "genres"])
-
-            files = (listdir("./Cleaned_dataset"))
-            for file in files:
-                with open("./Cleaned_dataset/"+file) as f:
-                    game = json.load(f)
-
-                with open('games.csv', mode= 'a', encoding='utf-8') as games_file:
-                    games_writer = csv.writer(games_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
-                    games_writer.writerow([game['id'], game['name'], game['description_raw'], game['genres']])
