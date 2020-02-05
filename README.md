@@ -21,9 +21,7 @@ Public games database such RAWG provides genre information to assist searching. 
 
 The Data Set on this project is a set of text files from GDB [1]. They contain 80,000 games and 65,000 of genre information of games. For this project **65,000** *unique* titles at wich both the description and genre information were available were chosen and randomly split into 80% and 20% sets. The former was used for training while the latter for testing.
 
-
-Note that a game can be (and often so) associated with **more than one** genres.
-
+Note that a game can be (and often so) associated with **more than one** genres. There are 13 listed genres in the GDB data set and only the **7** (denoted as *L*) most commong genres were used in this project. The genres names and percentages of games in them are:
 
 
 
