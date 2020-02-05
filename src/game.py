@@ -33,7 +33,7 @@ class Game():
     def creacsv(self):
         # nltk.download('stopwords')
         # nltk.download('punkt')
-        with open('games.csv', mode='w') as games_file:
+        with open('gameClean.csv', mode='w') as games_file:
             games_writer = csv.writer(games_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
             games_writer.writerow(["id","name","descr", "genres"])
 
@@ -102,13 +102,8 @@ class Game():
                                     stem = stemmer.stem(word)
                                     stemSentence += stem
                                     stemSentence += " "
-                                stemSentence = stemSentence.strip()
-                                descri = stemSentence
 
-                                descri = re.sub("\\b\\w{0,2}\\b|[^a-zA-Z ]","", str(filtered_sentence))
-
-
-                                descri = ['amusing', 'amusement', 'and', 'amused' ]
+                                descri = re.sub("\\b\\w{0,2}\\b|[^a-zA-Z ]","", str(stemSentence))
 
                                 
                                 # remove whitespaces 
@@ -157,11 +152,11 @@ class Game():
                                 with open('gameClean.csv', mode= 'a', encoding='utf-8') as games_file:
                                     games_writer = csv.writer(games_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
                                     games_writer.writerow([gameinfo['id'], name, descri, gameinfo['genres']])
-                            elif  descri != '' and name != '' and flag ==True:
+                            # elif  descri != '' and name != '' and flag ==True:
                                 # print(game['id'])
-                                with open('gameTest.csv', mode= 'a', encoding='utf-8') as games_file:
-                                    games_writer = csv.writer(games_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
-                                    games_writer.writerow([gameinfo['id'], name, descri, gameinfo['genres_new']])
+                                # with open('gameTest.csv', mode= 'a', encoding='utf-8') as games_file:
+                                    # games_writer = csv.writer(games_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+                                    # games_writer.writerow([gameinfo['id'], name, descri, gameinfo['genres_new']])
 
     def creacsvTot(self):
         with open('games.csv', mode='w') as games_file:
