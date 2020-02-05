@@ -16,8 +16,11 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.model_selection import train_test_split
 from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
+from nltk.stem.snowball import SnowballStemmer
 import pandas as pd
 from langdetect import detect
+import sys
+import warnings
 
 
 class Game():
@@ -93,14 +96,29 @@ class Game():
                                     if w not in stop_words: 
                                         filtered_sentence.append(w)
 
+                                stemmer = SnowballStemmer('english')
+                                stemSentence = ''
+                                for word in filtered_sentence:
+                                    stem = stemmer.stem(word)
+                                    stemSentence += stem
+                                    stemSentence += " "
+                                stemSentence = stemSentence.strip()
+                                descri = stemSentence
+
                                 descri = re.sub("\\b\\w{0,2}\\b|[^a-zA-Z ]","", str(filtered_sentence))
 
+
+                                descri = ['amusing', 'amusement', 'and', 'amused' ]
+
+                                
                                 # remove whitespaces 
                                 descri = ' '.join(descri.split())
                                 descri = descri.strip()
 
+                                
+
                                 if descri != '':
-                                    print('-'+name+'-'+descri+'-')
+                                    # print('-'+name+'-'+descri+'-')
                                     lang = detect(descri)
                                     
                                     if lang != 'en':
