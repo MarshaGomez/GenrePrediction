@@ -61,7 +61,7 @@ class Game():
                                 name = game['name']
                                 name = re.sub("\'", "", name) 
                                 name= name.replace(",",'').replace("\n", " ")
-                                name = re.sub("[^a-zA-Z\d ]","", name) 
+                                name = re.sub("[^a-zA-Z\d ]"," ", name) 
                                 name = name.lower() 
                                 
                                 # remove everything except alphabets 
@@ -76,7 +76,7 @@ class Game():
                                 
                                 descri = re.sub("\'", "", descri) 
                                 # remove everything except alphabets 
-                                descri = re.sub("\b\w{0,2}\b|[^a-zA-Z ]","", descri) 
+                                descri = re.sub("\b\w{0,2}\b|[^a-zA-Z ]"," ", descri) 
                                 
                                 # remove whitespaces 
                                 descri = ' '.join(descri.split())
@@ -103,7 +103,7 @@ class Game():
                                     stemSentence += stem
                                     stemSentence += " "
 
-                                descri = re.sub("\\b\\w{0,2}\\b|[^a-zA-Z ]","", str(stemSentence))
+                                descri = re.sub("\\b\\w{0,2}\\b|[^a-zA-Z ]"," ", str(stemSentence))
 
                                 
                                 # remove whitespaces 
@@ -134,20 +134,24 @@ class Game():
                                     if gen == 'Massively Multiplayer':
                                         gen = 'RPG'
 
+                                    if gen == 'Card':
+                                        gen = 'BoardGames'
+
                                     if gen != 'Platformer' and gen != 'Family' and gen != 'Casual' and gen != 'Indie' and gen != 'Arcade':
                                         gameinfo['genres'].append(gen)
                                         gameinfo['genres_new'].append(gen)
-                                        gameinfo['genres'] = list(dict.fromkeys(gameinfo['genres']))
                                     else:
                                         gameinfo['genres_new'].append(gen)
                                         flag=True
-                                        gameinfo['genres_new'] = list(dict.fromkeys(gameinfo['genres_new']))
-
+                                    
+                                    
+                                gameinfo['genres_new'] = list(dict.fromkeys(gameinfo['genres_new']))
+                                gameinfo['genres'] = list(dict.fromkeys(gameinfo['genres']))
                                 
                         
                             #json.dump(gameinfo, open("./clean.json", "a"), indent = 2)
 
-                            if descri != '' and name != '' and flag ==False:
+                            if descri != '' and name != '' and flag ==False and gameinfo['genres'] != []:
                                 # print(game['id'])
                                 with open('gameClean.csv', mode= 'a', encoding='utf-8') as games_file:
                                     games_writer = csv.writer(games_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
