@@ -15,11 +15,17 @@ Websites like PlayStation Now, Steam and Origin, offer lists of games based on g
 
 ## Introduction
 
-Public games database such RAWG provides genre information to assist searching. The tagging of games genres is still a manual process which involves the collection of users suggestions and consumers. Games are often registered with inaccurate genres. Automatic genres classification of a game based on its synopsis not only speeds up the classification process by providing a list of suggestion but the result may potentially be more accurate than an untrained human.
-
-Predicting games genres is a multilabel classification problem where a game can be tagged to more than one genres. For the sake of simplicity, we eill be predict wether a game belong to a particular genre or not 
+Public games database such RAWG provides genre information to assist searching. The tagging of games genres is still a manual process which involves the collection of users suggestions and consumers. Games are often registered with inaccurate genres. Automatic genres classification of a game based on its synopsis not only speeds up the classification process by providing a list of suggestion but the result may potentially be more accurate than an untrained human. We will collect data using one of many available apis on internet and compile a data set wich will be primarily based on *GDB (Game Data Base)*. We will rely on text analysis of the Plot/Summary of the movie data collected and train our classifier using text analysis techniques
 
 ## Data Collection
+
+The Data Set on this project is a set of text files from GDB [1]. They contain 80,000 games and 65,000 of genre information of games. For this project **65,000** *unique* titles at wich both the description and genre information were available were chosen and randomly split into 80% and 20% sets. The former was used for training while the latter for testing.
+
+
+Note that a game can be (and often so) associated with **more than one** genres.
+
+
+
 
 ## Data Preprocesing
 

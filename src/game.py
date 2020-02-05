@@ -34,9 +34,9 @@ class Game():
             games_writer = csv.writer(games_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
             games_writer.writerow(["id","name","descr", "genres"])
 
-            files = (listdir("C:/Users/Matilde/Desktop/dataminingprog/Cleaned_dataset"))
+            files = (listdir("./Cleaned_dataset"))
             for file in files:
-                with open("C:/Users/Matilde/Desktop/dataminingprog/Cleaned_dataset/"+file) as f:
+                with open("./Cleaned_dataset/"+file) as f:
                     gameinfo = {}
                     game = json.load(f)
                     # print(game['name'])
@@ -113,14 +113,48 @@ class Game():
 
                                 genres= game['genres']
                                 gameinfo['genres']=[]
-                                for genre in genres:                         
+                                gameinfo['genres_new']=[]
+                                for genre in genres:
+                                    flag=False                    
                                     gen=genre['name']
-                                    gameinfo['genres'].append(gen)
+
+                                    if gen == 'Massively Multiplayer':
+                                        gen = 'RPG'
+
+                                    if gen != 'Platformer' and gen != 'Family' and gen != 'Casual' and gen != 'Indie' and gen != 'Arcade':
+                                        gameinfo['genres'].append(gen)
+                                        gameinfo['genres_new'].append(gen)
+                                        gameinfo['genres'] = list(dict.fromkeys(gameinfo['genres']))
+                                    else:
+                                        gameinfo['genres_new'].append(gen)
+                                        flag=True
+                                        gameinfo['genres_new'] = list(dict.fromkeys(gameinfo['genres_new']))
+
+                                
                         
                             #json.dump(gameinfo, open("./clean.json", "a"), indent = 2)
 
-                            if descri != '' and name != '':
+                            if descri != '' and name != '' and flag ==False:
                                 # print(game['id'])
-                                with open('games.csv', mode= 'a', encoding='utf-8') as games_file:
+                                with open('gameClean.csv', mode= 'a', encoding='utf-8') as games_file:
                                     games_writer = csv.writer(games_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
                                     games_writer.writerow([gameinfo['id'], name, descri, gameinfo['genres']])
+                            elif  descri != '' and name != '' and flag ==True:
+                                # print(game['id'])
+                                with open('gameTest.csv', mode= 'a', encoding='utf-8') as games_file:
+                                    games_writer = csv.writer(games_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+                                    games_writer.writerow([gameinfo['id'], name, descri, gameinfo['genres_new']])
+
+    def creacsvTot(self):
+        with open('games.csv', mode='w') as games_file:
+            games_writer = csv.writer(games_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+            games_writer.writerow(["id","name","descr", "genres"])
+
+            files = (listdir("./Cleaned_dataset"))
+            for file in files:
+                with open("./Cleaned_dataset/"+file) as f:
+                    game = json.load(f)
+
+                with open('games.csv', mode= 'a', encoding='utf-8') as games_file:
+                    games_writer = csv.writer(games_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+                    games_writer.writerow([game['id'], game['name'], game['description_raw'], game['genres']])
