@@ -1,4 +1,2 @@
 *.gz
-/Cleaned_dataset/
-/src/Cleaned_dataset/
-*.csv
+/data/Cleaned_dataset/
