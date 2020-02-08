@@ -1,0 +1,1 @@
+move forward backward rotat left mous button shoot laser hold right mous button aim key throw bomb key switch view key termin game
