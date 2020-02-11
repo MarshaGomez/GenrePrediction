@@ -1,1 +1,0 @@
-movement ship boost ship keep stop ship keep move left ship keep move right ship keep shoot click left mous

@@ -34,9 +34,6 @@ with open('gameClean.csv', mode='w') as games_file:
         with open("C:/Users/Matilde/Desktop/dataminingprog/Cleaned_dataset/"+file) as f:
             gameinfo = {}
             game = json.load(f)
-            # print(game['name'])
-            #print(game['id'])
-            # print(f)
 
             if game['genres'] != []:
                 if game['description_raw'] is not None and len(game['description_raw']) > 50:

@@ -1,1 +1,0 @@
-control move wasd arrow key shoot start space

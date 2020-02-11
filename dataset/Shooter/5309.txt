@@ -1,1 +1,0 @@
-classic mode control esc paus wasd move control mous cursor aim left mous button shoot use lmb destroy asteroid asteroid hit lose life pacifist mode control esc paus ship follow cursor dodg asteroid save astronaut give point astronaut spawn everi second random locat screen
