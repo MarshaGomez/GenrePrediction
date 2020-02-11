@@ -1,2 +1,5 @@
 *.gz
 /data/Cleaned_dataset/
+*.txt
+/dataset/
+/data/
