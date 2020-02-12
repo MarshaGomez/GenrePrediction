@@ -29,9 +29,9 @@ with open('gameClean.csv', mode='w') as games_file:
     games_writer = csv.writer(games_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
     games_writer.writerow(["id","name","descr", "genres"])
 
-    files = (listdir("C:/Users/Matilde/Desktop/dataminingprog/Cleaned_dataset"))
+    files = (listdir(".data/Cleaned_dataset"))
     for file in files:
-        with open("C:/Users/Matilde/Desktop/dataminingprog/Cleaned_dataset/"+file) as f:
+        with open(".data/Cleaned_dataset/"+file) as f:
             gameinfo = {}
             game = json.load(f)
 
