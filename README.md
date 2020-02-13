@@ -6,7 +6,7 @@
 - **CFU:** 12
 - **Professor:** Francesco Marcelloni
 - **Periodo:** First Semester
-- **Students:** Matilde Mazzini and Marsha Gómez Gómez
+- **Students:** Matilde Mazzini and Marsha Gรณmez Gรณmez
 - **Project Name:** Games Genre Prediction
 
 ## Abstract
@@ -21,24 +21,22 @@ Public games database such RAWG provides genre information to assist searching. 
 
 The Data Set on this project is a set of text files from GDB. They contain 80,000 games and 65,000 of genre information of games. For this project **65,000** *unique* titles at wich both the description and genre information were available were chosen and randomly split into 80% and 20% sets. The former was used for training while the latter for testing.
 
-Note that a game can be (and often so) associated with **more than one** genres. There are 13 listed genres in the GDB data set and only the **7** (denoted as *L*) most commong genres were used in this project. The genres names and percentages of games in them are: *action(22%), adventure(15%), puzzle(14%), RPG(10%), simulation(9%), strategy(9%), Shooter(7%), sports(4%), racing(3%) educational(2%), fighting(2%), BoardGames(3%)* respectively.
+Note that a game can be (and often so) associated with **more than one** genres. There are 12 listed genres in the GDB data set and only the **7** (denoted as *L*) most commong genres were used in this project. The genres names and percentages of games in them are: *action(22%), adventure(15%), puzzle(14%), RPG(10%), simulation(9%), strategy(9%), shooter(7%), sports(4%), racing(3%) educational(2%), fighting(2%), BoardGames(3%)* respectively.
 
-```shell
-Number      Genre       Count    Porcentage
-1          Action        6848          22 %
-2       Adventure        4725          15 %
-3          Puzzle        4412          14 %
-4             RPG        3105          10 %
-5      Simulation        2745           9 %
-6        Strategy        2660           9 %
-7         Shooter        2101           7 %
-8          Sports        1122           4 %
-9          Racing        1000           3 %
-10    Educational         549           2 %
-11       Fighting         593           2 %
-12     BoardGames         640           2 %
-13           Card         262           1 %
-```
+Genre | Count | Porcentage
+------------ | ------------- | -------------
+Action | 6848 | 22 %
+Adventure | 4725 | 15 %
+Puzzle | 4412 | 14 %
+RPG | 3105 | 10 %
+Simulation | 2745 | 9 %
+Strategy | 2660 | 9 %
+Shooter | 2101 | 7 %
+Sports | 1122 | 4 %
+Racing | 1000 | 3 %
+Educational | 549 | 2 %
+Fighting | 593 | 2 %
+BoardGames | 640 | 3 %
 
 ![Image-Plot-Genres](./img/plot-genres.PNG)
 
