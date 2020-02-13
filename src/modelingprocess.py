@@ -23,76 +23,29 @@ def getBinaryGenreTag(games_new):
 
 def getBinaryOtherTags(games_new):
     train = games_new
+
+    genres = ['Sports', 'Fighting', 'Educational', 'Puzzle', 'BoardGames', 'Adventure', 'Action', 'RPG', 'Simulation', 'Strategy', 'Shooter', 'Racing']
     clean_train_reviews = []
     noTagsVector = []
 
     i = 0
+    j = 0
     for tag in train['genre_new']:
         tagVector = [0,0,0,0,0,0,0,0,0,0,0,0]
 
         for tagOne in tag:
-            if tagOne =='Sports':
-                tagVector[0] = 1
-            if tagOne =='Fighting':
-                tagVector[1] = 1
-            if tagOne =='Educational':
-                tagVector[2] = 1
-            if tagOne =='Puzzle':
-                tagVector[3] = 1
-            if tagOne =='BoardGames':
-                tagVector[4] = 1
-            if tagOne =='Adventure':
-                tagVector[5] = 1
-            if tagOne =='Action':
-                tagVector[6] = 1
-            if tagOne =='RPG':
-                tagVector[7] = 1
-            if tagOne =='Simulation':
-                tagVector[8] = 1
-            if tagOne =='Strategy':
-                tagVector[9] = 1
-            if tagOne =='Shooter':
-                tagVector[10] = 1
-            if tagOne =='Racing':
-                tagVector[11] = 1
-
-        if tagVector[0] != 1:
-            clean_train_reviews.append(train["description"][i])
-            noTagsVector.append('Sports')
-        if tagVector[1] != 1:
-            clean_train_reviews.append(train["description"][i])
-            noTagsVector.append('Fighting')
-        if tagVector[2] != 1:
-            clean_train_reviews.append(train["description"][i])
-            noTagsVector.append('Educational')
-        if tagVector[3] != 1:
-            clean_train_reviews.append(train["description"][i])
-            noTagsVector.append('Puzzle')
-        if tagVector[4] != 1:
-            clean_train_reviews.append(train["description"][i])
-            noTagsVector.append('BoardGames')
-        if tagVector[5] != 1:
-            clean_train_reviews.append(train["description"][i])
-            noTagsVector.append('Adventure')
-        if tagVector[6] != 1:
-            clean_train_reviews.append(train["description"][i])
-            noTagsVector.append('Action')
-        if tagVector[7] != 1:
-            clean_train_reviews.append(train["description"][i])
-            noTagsVector.append('RPG')
-        if tagVector[8] != 1:
-            clean_train_reviews.append(train["description"][i])
-            noTagsVector.append('Simulation')
-        if tagVector[9] != 1:
-            clean_train_reviews.append(train["description"][i])
-            noTagsVector.append('Strategy')
-        if tagVector[10] != 1:
-            clean_train_reviews.append(train["description"][i])
-            noTagsVector.append('Shooter')
-        if tagVector[11] != 1:
-            clean_train_reviews.append(train["description"][i])
-            noTagsVector.append('Racing')
+            j = 0
         
+            for genre in genres:
+                if (genre == tagOne):
+                    tagVector[j] = 1
+                j = j + 1
+        j = 0
+        for tag in tagVector:
+            if tag != 1:
+                clean_train_reviews.append(train["description"][i])
+                noTagsVector.append(genres[j])
+            j = j + 1
         i = i + 1
     
 
@@ -126,8 +79,8 @@ def initProcess():
     games['genre_new'] = genres
     games_new =  games[~(games['genre_new'] == ' ')]
 
-    # getBinaryGenreTag(games_new)
-    # print('Task Complete getBinaryGenreTag')
+    getBinaryGenreTag(games_new)
+    print('Task Complete getBinaryGenreTag')
 
     getBinaryOtherTags(games_new)
     print('Task Complete getBinaryOtherTags')
