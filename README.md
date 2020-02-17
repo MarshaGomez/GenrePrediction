@@ -7,9 +7,10 @@
 
 ## Abstract
 
-Websites like Rawg and Steam offer lists of games descriptions also based on their genres, to help users selecting the game of interest based on the genre. Tagging of games is a complex process and usually involves a labor-intensive process where the games are assigned to one or more Genres based on the proposals sent by the users and consumers. If we can systematize this process of game tagging, not only will it be fast, save human effort but it will be more accurate than an untrained human as well.
+Websites like Rawg and Steam offer huges database of video games description to allow the users to browse and read about their favourite games.
+They offer the possibility to browse these games info pages per genre, to help users selecting the game of interest based on the genre. The genre tagging process is complex and time consuming: games are assigned to one or more genres based on the proposals sent by the users and consumers. If we can automatize this process of game tagging, not only will it be fast, save human effort but it will be more accurate than an untrained human as well.
 
-Games are often registered with inaccurate genres. Automatic genres classification of a game based on its synopsis not only speeds up the classification process by providing a list of suggestion but the result may potentially be more accurate than an untrained human. We will collect data using one of many available apis on internet and compile a data set wich will be primarily based on *GDB (Game Data Base)*. We will rely on text analysis of the Plot/Summary of the movie data collected and train our classifier using text analysis techniques.
+We collected data using one of many available API on internet. We relied on text analysis of the Plot/Summary of the video game data collected and trained our classifiers using text analysis techniques.
 
 
 ## Introduction
