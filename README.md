@@ -10,20 +10,19 @@
 Websites like Rawg and Steam offer huges database of video games description to allow the users to browse and read about their favourite games.
 They offer the possibility to browse these games info pages per genre, to help users selecting the game of interest based on the genre. The genre tagging process is complex and time consuming: games are assigned to one or more genres based on the proposals sent by the users and consumers. If we can automatize this process of game tagging, not only will it be fast, save human effort but it will be more accurate than an untrained human as well.
 
-We collected data using one of many available API on internet. We relied on text analysis of the Plot/Summary of the video game data collected and trained our classifiers using text analysis techniques.
-
+We collected data using one of many available API on internet. We relied on text analysis of the Description/Summary of the video games data collected and trained our classifiers using text analysis techniques.
 
 ## Introduction
 
 GIAR (Games information and Ratings) is an application that collects information and ratings about videogames. An admin can insert a new game in the GIAR database accessig the Insert New Game page. During this process the admin should specify many information about the game like: name, release date, description, genre and many more.
 
 The idea of the project is to add a genre prediction feature to the existing GIAR application to make the process of inserting a new game faster. 
-After the admin loads a description of a game on the insert a new game page, the application offers the possibility to predic the multiple genres to which a game belongs and proposes the result in a list that the admin can modify. 
+After the admin loads a description of a game on the `insert a new game page`, the application offers the possibility to predic the multiple genres to which a game belongs and proposes the result in a list that the admin can modify. 
 
 ## Multi-label or Multi-class?
-Because of the fact that a game can be (and often so) associated with **more than one** genres, this is not a multi-class classification problem (when there’s only one label per observation), but this could be solved as a multi-label classification challenge (where multiple labels may be assigned to each instance).
+Because of the fact that a game can be (and often so) associated with **more than one** genres, this is not a multi-class classification problem, where there’s only one label per observation, but it is a multi-label classification problem, where multiple labels may be assigned to each instance.
 
-#### Multi-class models
+### Multi-class models
 - Many class values c={c1,c2,...ck}
 - An object may belong to only **one** class. Oj -> Cj
 
@@ -31,7 +30,7 @@ Because of the fact that a game can be (and often so) associated with **more tha
 
 A standard k-fold cross validation may be used to evaluate this classifier, because one object may belong to only one class and the confusion matrix it is easy to construct.
 
-#### Multi-label models
+### Multi-label models
 - Many class values c={c1,c2,...ck}
 - An object may belong to **multiple** class. Oj -> (Cj,Cp,Cq)
 
@@ -42,9 +41,9 @@ This will be implemented like this:
 - Creating a 2-class classifier per each class like binary classifiers do (recognize one class, discard others).
 - Use such models in parallel.
 
-![Image-Plot-Genres](./img/arch.png)
+![architecture](./img/arch.png)
 
-### Evaluation
+#### Evaluation
 Since an object may belong to multiple classes, to evaluate the correctness of the classification the overall result must be taken into consideration. a normal confusion matrix can't be build for such problem because it map the relation between predicted and real class of an object that belongs to a single class.
 a special confusion matrix must be constructed.
 
@@ -73,42 +72,47 @@ BoardGames | 640 | 3 %
 
 ## Data Preprocessing
 
-The very first data set cleaning step was to retrieve from the overall database only the description and the list of genres for every game. 
+The very first data set cleaning step was to retrieve from the overall database only the name, the description and the list of genres for every game. 
 
-sono state rimossi i record in cui non era presente la lista dei genere e la descrizione
+name |description | genres
+---|----|--------
+007 legends|Gamers and Bond aficionados alike will become James Bond, reliving the world-famous spy’s most iconic and intense undercover missions from throughout the entire Bond film franchise — including this year’s highly anticipated new installment, “SKYFALL” available as a free download on November 9, 2012.|['Action', 'Shooter']
 
-poi un'operazione di pulizia del testo dai link e dalle virgole è stata fatta per creare il csv. 
+Then the records in which the genres list or the description were empty were removed.
 
-sono stati eliminati i record non in lingua inglese
+Numbers, commas and links were removed from the text of the description. 
 
-sono state rimosse le parole 
+Records of games not written in english were removed.
 
-i giochi con piu generi sono stati unwinded, ottenendo come risultato finale che un gioco appare piu volte ma ogni volta con un solo genere
+Words made by only two letters where removed from the descriptions.
 
+Games with more than a genre in the genres list were unwinded, obtaining as result that a game description can appear multiple times in the dataset but with a different genre in the genre column.
 
-dataset finale che è stato passato in java è stato bilanciato inserendo per ogni genere 400 items presi randomicamente dal dataset completo. stando attenti a non ripetere un gioco.
+The final dataset that was imported in Java is balanced: it has been created inserting 400 items for each different genre randomly taken from the previous cleaned dataset paying attention to not insert the same description multiple times.
 
 1: Description, 2: Genre:
 
 ![dataset](./img/datasetweka.PNG)
 
+Dimension of dataset: 4800 instances. 400 for each genre.
 
 Balanced structure of the dataset:
 
 ![strutturaweka](./img/strutturadbweka.PNG)
 
-dim dataset 4800 istanze. 400 per ogni genere
 
-## Java weka
-il dataset viene randomizzato, shuffle of the items.
+## Building the classifiers
+All the following operations were made in Java using the Weka API.
 
-l'intero dataset viene diviso in 10 fold per la cross validation.
+The input balanced dataset is randomized, the items are shuffled.
 
-a ogni ciclo cambia il training e il test set
+The overall dataset is divided in 10 fold of equal size to perform the cross validation.
+
+For every fold a new training and test sets were defined:
 
 ![crossval](./img/crossval.png)
 
-per ognuno di queste combinazioni di test e training:
+For each of theese training and test sets combination:
 
 a partire dal corrente training ser vengono creati 12 dataset binari uno per ogni genere
 e con questi binari vengono addestrati 12 classificatori binari che vengono testati tutti con il test set corrente tolte le etichette
@@ -132,11 +136,6 @@ confusiona matrix build
 ## SMO
 
 ## Random Forest
-
-
-
-
-
 
 
 ### Interface
