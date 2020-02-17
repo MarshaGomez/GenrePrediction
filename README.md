@@ -104,6 +104,8 @@ Balanced structure of the dataset:
 ## Building the classifiers
 All the following operations were made in Java using the Weka API.
 
+we first build 12 classifier to be trained.
+
 The input balanced dataset is randomized, the items are shuffled.
 
 The overall dataset is divided in 10 fold of equal size to perform the cross validation.
@@ -114,33 +116,44 @@ For every fold a new training and test sets were defined:
 
 For each of theese training and test sets combination:
 
-a partire dal corrente training ser vengono creati 12 dataset binari uno per ogni genere
-e con questi binari vengono addestrati 12 classificatori binari che vengono testati tutti con il test set corrente tolte le etichette
-fold 0
 ![fold](./img/fold.png)
 
-training
+Starting from the current training set, 12 binary balanced datasets, one for each genre, are created like this: we selected the same number of istances of a specific genre and istances of a genre that is different from the actual one.
 
+With theese binary datasets we train the 12 binary classifiers, trained to classify or not an item as of that specifi genre or not. 
+
+The classes of the test set were set missing in order to test all the 12 classifiers with the same current test set.
+
+Training:
 ![training](./img/trainingschema.png)
 
-test evaluation
-confusiona matrix build
+Every output of a classifier, after an istance of the unlabeled testset was given as input, is compared to the actual corresponding class of the real test set, and the confusion matrix updated adding +1 in the cell corresponding to the predicted column and the expected row.
+every time a classifier of a specifi genre is tested the corresponding row of the confusona matrix is updated.
+there is just one global confusion matrix that is updated for every genre inside every fold.
 
-![test](./img/testschema.png)
+the classifiers are upgraded and retrained at every fold with different test and train set.
+
+Test:
+![test](./img/testschema.png) 
+
+Confusion matrix:
 ![confusionmatrix](./img/confmat.png)
 
 
 
-## Naive Bayes
+## Naive Bayes Multinomial Text
+
+mettere screen di excel
 
 ## SMO
 
 ## Random Forest
 
 
-### Interface
+## Admin Interface
 
-Admin interface:
+Inside the `Insert New Game` page the admin can insert different information regarding the game. After the description loading, he can press the Predict button to see the list of the predicted genres for that game. He can then add or remove genres from the list in case of unprecise predictions.
+
 ![Image-Plot-Genres](./img/gif/gif.gif)
 
 
@@ -389,8 +402,8 @@ for(int z = 0; z < genres.size(); z++) {
 
 ### Genre Prediction
 
-In the following code the description loaded by the admin is collected and used to build a dataset with only one instace with missing class.
-The dataset is given as input to the 12 classifiers, everytime a classifier of a specific genre gives a positive output, that genre is added to the list of predicted genres that the admin can modify in case of unprecise prediction.
+In the following code you can see that the description loaded by the admin is collected and used to build a dataset with only one unlabeled instace.
+The dataset is given as input to the 12 classifiers, and everytime that a classifier of a specific genre gives a positive output, that genre is added to the list of predicted genres.
 
 ```java
 	public static List<String> predictGenres(String descrizione) {
